@@ -318,6 +318,7 @@ lua_State *lj_state_new(lua_State *L)
   setmrefr(L1->glref, L->glref);
   setgcrefr(L1->env, L->env);
   stack_init(L1, L);  /* init stack */
+  L1->luabase = L->luabase;
   lj_assertL(iswhite(obj2gco(L1)), "new thread object is not white");
   return L1;
 }
