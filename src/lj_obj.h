@@ -660,6 +660,13 @@ struct lua_State {
   GCRef env;		/* Thread environment (table of globals). */
   void *cframe;		/* End of C stack frame chain. */
   MSize stacksize;	/* True stack size (incl. LJ_STACK_EXTRA). */
+
+  /* The above fields have a size of 48 bytes (92 bytes on a 64-bit build respectively).
+   * The Garry's Mod-specific extension has an additional 22 bytes of data, as well as
+   * a pointer to the LuaBase object.
+   */
+  unsigned char _reserved[22];
+  void *luabase;
 };
 
 #define G(L)			(mref(L->glref, global_State))
