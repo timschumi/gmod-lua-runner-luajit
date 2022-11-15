@@ -15,4 +15,4 @@ ExternalProject_Add(luajit-project
 ExternalProject_Get_Property(luajit-project INSTALL_DIR)
 add_dependencies(luajit luajit-project)
 target_include_directories(luajit INTERFACE "${INSTALL_DIR}/usr/local/include/luajit-2.1")
-target_link_libraries(luajit INTERFACE "${INSTALL_DIR}/usr/local/lib/libluajit-5.1.a")
+target_link_libraries(luajit INTERFACE "-Wl,--whole-archive" "${INSTALL_DIR}/usr/local/lib/libluajit-5.1.a" "-Wl,--no-whole-archive")
