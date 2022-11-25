@@ -701,8 +701,11 @@ struct lua_State {
   /* The above fields have a size of 48 bytes (92 bytes on a 64-bit build respectively).
    * The Garry's Mod-specific extension has an additional 22 bytes of data, as well as
    * a pointer to the LuaBase object.
+   * Note that whatever this implementation puts into those 22 bytes does not match up
+   * with what the real `lua_shared` implementation does.
    */
-  unsigned char _reserved[22];
+  GCRef next_thread;
+  unsigned char _reserved[22 - sizeof(GCRef)];
   void *luabase;
 };
 

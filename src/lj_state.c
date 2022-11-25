@@ -260,6 +260,8 @@ LUA_API lua_State *lua_newstate(lua_Alloc allocf, void *allocd)
     return NULL;
   }
   L->status = LUA_OK;
+  setgcrefnull(L->next_thread);
+  L->luabase = NULL;
   return L;
 }
 
@@ -319,6 +321,9 @@ lua_State *lj_state_new(lua_State *L)
   setgcrefr(L1->env, L->env);
   stack_init(L1, L);  /* init stack */
   L1->luabase = L->luabase;
+  setgcrefr(L1->next_thread, L->next_thread);
+  /* NOBARRIER: A thread (i.e. L) is never black. */
+  setgcref(L->next_thread, obj2gco(L1));
   lj_assertL(iswhite(obj2gco(L1)), "new thread object is not white");
   return L1;
 }

@@ -1313,6 +1313,23 @@ LUA_API void lua_setallocf(lua_State *L, lua_Alloc f, void *ud)
 
 /* -- Custom extensions ------------------------------------------ */
 
+LUA_API lua_State *luaR_next_thread(lua_State *L)
+{
+  while (1) {
+    lua_State *next_thread = gco2th(gcref(L->next_thread));
+
+    if (!next_thread)
+      return NULL;
+
+    if (luaR_status(next_thread) != COROUTINE_DEAD)
+      return next_thread;
+
+    /* next_thread is dead, remove it from the list. */
+    /* NOBARRIER: A thread (i.e. L) is never black. */
+    setgcrefr(L->next_thread, next_thread->next_thread);
+  }
+}
+
 LUA_API lua_State *luaR_current_thread(lua_State *L)
 {
   GCobj *o = gcref(G(L)->cur_L);
