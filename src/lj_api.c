@@ -1292,6 +1292,11 @@ LUA_API void lua_setallocf(lua_State *L, lua_Alloc f, void *ud)
 
 /* -- Custom extensions ------------------------------------------ */
 
+LUA_API lua_State *luaR_next_thread(lua_State *L)
+{
+  return L->next_thread;
+}
+
 LUA_API lua_State *luaR_current_thread(lua_State *L)
 {
   GCobj *o = gcref(G(L)->cur_L);

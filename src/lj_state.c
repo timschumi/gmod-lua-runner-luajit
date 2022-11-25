@@ -225,6 +225,8 @@ LUA_API lua_State *lua_newstate(lua_Alloc f, void *ud)
     return NULL;
   }
   L->status = LUA_OK;
+  L->next_thread = NULL;
+  L->luabase = NULL;
   return L;
 }
 
@@ -284,6 +286,8 @@ lua_State *lj_state_new(lua_State *L)
   setgcrefr(L1->env, L->env);
   stack_init(L1, L);  /* init stack */
   L1->luabase = L->luabase;
+  L1->next_thread = L->next_thread;
+  L->next_thread = L1;
   lua_assert(iswhite(obj2gco(L1)));
   return L1;
 }
