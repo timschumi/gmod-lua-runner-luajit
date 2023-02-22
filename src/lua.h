@@ -359,6 +359,12 @@ LUA_API int lua_isyieldable (lua_State *L);
 /* Custom extensions */
 LUA_API lua_State *luaR_next_thread (lua_State *L);
 LUA_API lua_State *luaR_current_thread (lua_State *L);
+LUA_API int luaR_status (lua_State *L);
+
+#define COROUTINE_RUNNING 0
+#define COROUTINE_SUSPENDED 1
+#define COROUTINE_NORMAL 3
+#define COROUTINE_DEAD 4
 
 
 struct lua_Debug {

@@ -535,12 +535,13 @@ LJLIB_CF(coroutine_status)
   if (!(L->top > L->base && tvisthread(L->base)))
     lj_err_arg(L, 1, LJ_ERR_NOCORO);
   co = threadV(L->base);
-  if (co == L) s = "running";
-  else if (co->status == LUA_YIELD) s = "suspended";
-  else if (co->status != LUA_OK) s = "dead";
-  else if (co->base > tvref(co->stack)+1+LJ_FR2) s = "normal";
-  else if (co->top == co->base) s = "dead";
-  else s = "suspended";
+  lua_assert(L == luaR_current_thread(co));
+  int status = luaR_status(co);
+  if (status == COROUTINE_RUNNING) s = "running";
+  else if (status == COROUTINE_SUSPENDED) s = "suspended";
+  else if (status == COROUTINE_NORMAL) s = "normal";
+  else if (status == COROUTINE_DEAD) s = "dead";
+  else lua_assert(false);
   lua_pushstring(L, s);
   return 1;
 }
