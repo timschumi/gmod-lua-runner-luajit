@@ -1294,7 +1294,7 @@ LUA_API void lua_setallocf(lua_State *L, lua_Alloc f, void *ud)
 
 LUA_API lua_State *luaR_next_thread(lua_State *L)
 {
-  return L->next_thread;
+  return gco2th(gcref(L->next_thread));
 }
 
 LUA_API lua_State *luaR_current_thread(lua_State *L)

@@ -301,6 +301,9 @@ static void gc_traverse_thread(global_State *g, lua_State *th)
       setnilV(o);
   }
   gc_markobj(g, tabref(th->env));
+  lua_State *next_thread = gco2th(gcref(th->next_thread));
+  if (next_thread)
+    gc_markobj(g, next_thread);
   lj_state_shrinkstack(th, gc_traverse_frames(g, th));
 }
 

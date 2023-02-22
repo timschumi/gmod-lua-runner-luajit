@@ -667,8 +667,8 @@ struct lua_State {
    * Note that whatever this implementation puts into those 22 bytes does not match up
    * with what the real `lua_shared` implementation does.
    */
-  lua_State *next_thread;
-  unsigned char _reserved[22 - sizeof(lua_State *)];
+  GCRef next_thread;
+  unsigned char _reserved[22 - sizeof(GCRef)];
   void *luabase;
 };
 
