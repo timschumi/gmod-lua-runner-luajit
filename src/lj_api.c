@@ -1319,3 +1319,12 @@ LUA_API lua_State *luaR_current_thread(lua_State *L)
   return gco2th(o);
 }
 
+LUA_API int luaR_status(lua_State *L)
+{
+  if (L == luaR_current_thread(L)) return COROUTINE_RUNNING;
+  else if (L->status == LUA_YIELD) return COROUTINE_SUSPENDED;
+  else if (L->status != LUA_OK) return COROUTINE_DEAD;
+  else if (L->base > tvref(L->stack)+1+LJ_FR2) return COROUTINE_NORMAL;
+  else if (L->top == L->base) return COROUTINE_DEAD;
+  else return COROUTINE_SUSPENDED;
+}
